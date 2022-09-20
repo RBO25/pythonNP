@@ -4,8 +4,8 @@ from django.db.models import Sum
 
 
 class Author(models.Model):
-    author = models.OneToOneField(User, on_delete=models.CASCADE)
-    rank_author = models.IntegerField(default=0)
+    author_user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating_author = models.IntegerField(default=0)
 
     def update_rating(self):
         sum_rating_author = self.post_set.all().aggregate(Sum('rating_post'))['rating_post__sum'] * 3
@@ -29,20 +29,20 @@ class Post(models.Model):
     ]
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE,)
-    post = models.CharField(max_length=30, choices=POSITIONS, default='news')
+    post_set = models.CharField(max_length=30, choices=POSITIONS, default='news')
     data = models.DateTimeField(auto_now_add=True)
     head = models.CharField(max_length=255)
     text = models.TextField()
-    rank = models.IntegerField(default=0)
+    rating_post = models.IntegerField(default=0)
 
     post_category = models.ManyToManyField(Category, through='PostCategory')
 
     def like(self):
-        self.rank += 1
+        self.rating_post += 1
         self.save()
 
     def dislike(self):
-        self.rank -= 1
+        self.rating_post -= 1
         self.save()
 
     def preview(self):
@@ -59,12 +59,12 @@ class Comment(models.Model):
     com_user = models.ForeignKey(User, on_delete=models.CASCADE)
     text_com = models.TextField()
     com_data = models.DateField(auto_now_add=True)
-    rank_com = models.IntegerField(default=0)
+    rating_comment = models.IntegerField(default=0)
 
     def like(self):
-        self.rank_com += 1
+        self.rating_comment += 1
         self.save()
 
     def dislike(self):
-        self.rank_com -= 1
+        self.rating_comment -= 1
         self.save()

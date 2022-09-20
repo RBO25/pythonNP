@@ -1,21 +1,21 @@
 from news.models import *
 
-User.objects.create_user('cooba')
-User.objects.create_user('spokk')
+User.objects.create_user('coobaa')
+User.objects.create_user('spokka')
 
 user_1 = User.objects.get(pk=1)
-author_1 = Author.objects.create(author=user_1)
+author_1 = Author.objects.create(author_user=user_1)
 user_2 = User.objects.get(pk=2)
-author_2 = Author.objects.create(author=user_2)
+author_2 = Author.objects.create(author_user=user_2)
 
 foreign_movies = Category.objects.create(name='Зарубежное кино')
 national_films = Category.objects.create(name='Отечественные фильмы')
 tv_show = Category.objects.create(name='Сериалы')
 cartoons = Category.objects.create(name='Мультфильмы')
 
-post_1 = Post.objects.create(author = author_1, post = Post.post, head = 'Дом Дракона', text = 'телевизионный сериал в жанре фэнтези, приквел телесериала «Игра престолов», ставший частью медиафраншизы «Песнь льда и огня». Экранизация книги Джорджа Р. Р. Мартина «Пламя и кровь», сюжетно связанная с книгой того же писателя «Восхождение Дракона»')
-post_2 = Post.objects.create(author = author_2, post = Post.post, head = 'Энканто!', text = 'Удивительная семья Мадригаль живет в спрятанном в горах Колумбии волшебном доме, расположенном в чудесном и очаровательном уголке под названием Энканто. Каждого ребёнка в семье Мадригаль магия этого места благословила уникальным даром — от суперсилы до способности исцелять. Увы, магия обошла стороной одну лишь юную Мирабель. Обнаружив, что магия Энканто находится в опасности, Мирабель решает, что именно она может быть последней надеждой на спасение своей особенной семьи')
-news_1 = Post.objects.create(author = author_1, post = Post.news, head = 'ЮЗЗи', text = 'Когда выйдет сериал “ЮЗЗЗ 2 сезон')
+post_1 = Post.objects.create(author = author_1, post_set = Post.post, head = 'Дом Дракона', text = 'телевизионный сериал в жанре фэнтези, приквел телесериала «Игра престолов», ставший частью медиафраншизы «Песнь льда и огня». Экранизация книги Джорджа Р. Р. Мартина «Пламя и кровь», сюжетно связанная с книгой того же писателя «Восхождение Дракона»')
+post_2 = Post.objects.create(author = author_2, post_set = Post.post, head = 'Энканто!', text = 'Удивительная семья Мадригаль живет в спрятанном в горах Колумбии волшебном доме, расположенном в чудесном и очаровательном уголке под названием Энканто. Каждого ребёнка в семье Мадригаль магия этого места благословила уникальным даром — от суперсилы до способности исцелять. Увы, магия обошла стороной одну лишь юную Мирабель. Обнаружив, что магия Энканто находится в опасности, Мирабель решает, что именно она может быть последней надеждой на спасение своей особенной семьи')
+news_1 = Post.objects.create(author = author_1, post_set = Post.news, head = 'ЮЗЗи', text = 'Когда выйдет сериал “ЮЗЗЗ 2 сезон')
 
 c1 = Category.objects.all()[0]
 c2 = Category.objects.all()[1]
@@ -51,12 +51,12 @@ comment_3.like()
 comment_4.like()
 comment_4.like()
 
-a_1 = author_1.update_rank()
-a_2 = author_2.update_rank()
+a_1 = author_1.update_rating()
+a_2 = author_2.update_rating()
 
-Author.objects.all().order_by('-rank_author').values('author_username', 'rank_author').first()
+Author.objects.all().order_by('-rating_author').values('author_user__username', 'rating_author').first()
 
-Post.objects.all().order_by('-rank_post').values('post_data', 'post_author__author_user__username', 'rank_post', 'head_post', 'id').first()
+Post.objects.all().order_by('-rating_post').values('data', 'author__author_user__username', 'rating_post', 'head', 'id').first()
 best_post = Post.objects.get(pk=3).preview()
 best_post
 
